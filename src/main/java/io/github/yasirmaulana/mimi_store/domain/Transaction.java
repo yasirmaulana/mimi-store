@@ -1,4 +1,4 @@
-package domain;
+package io.github.yasirmaulana.mimi_store.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,12 +8,11 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "transaksi")
-public class Transaksi {
-
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,12 +27,11 @@ public class Transaksi {
     private Long produkId;
 
     @Column(name = "jumlah", nullable = false)
-    private int jumlah;
+    private Long jumlah;
 
     @Column(name = "harga_satuan", nullable = false)
     private Long hargaSatuan;
 
     @Column(name = "total_harga", nullable = false)
     private Long totalHarga;
-
 }
