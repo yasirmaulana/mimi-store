@@ -1,9 +1,7 @@
 package io.github.yasirmaulana.mimi_store.web;
 
-import io.github.yasirmaulana.mimi_store.dto.ResultPageResponseDTO;
-import io.github.yasirmaulana.mimi_store.dto.TransactionSummaryDTO;
-import io.github.yasirmaulana.mimi_store.dto.TransaksiListResponseDTO;
-import io.github.yasirmaulana.mimi_store.dto.WebResponse;
+import io.github.yasirmaulana.mimi_store.dto.*;
+import io.github.yasirmaulana.mimi_store.service.SubscriberService;
 import io.github.yasirmaulana.mimi_store.service.TransactionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +15,7 @@ import java.util.List;
 public class TransaksiResource {
 
     private final TransactionService transactionService;
+    private SubscriberService subscriberService;
 
     @GetMapping("/transaksi-list")
     public ResponseEntity<ResultPageResponseDTO<TransaksiListResponseDTO>> findTransaksiList(
@@ -53,7 +52,10 @@ public class TransaksiResource {
 
     @GetMapping("/api/transactionsummarybymsisdn/{msisdn}")
     public WebResponse<List<TransactionSummaryDTO>> findTransactionSummaryByMsisdn(@PathVariable String msisdn) {
+        subscriberService.getPinByMsisdn(msisdn);
+
         List<TransactionSummaryDTO> hasil = transactionService.findTransactionSummaryByMsisdn(msisdn);
+
         if (hasil.isEmpty()) {
             return WebResponse.<List<TransactionSummaryDTO>>builder().status("failed").code("01").message("subscriber not found").build();
         }
