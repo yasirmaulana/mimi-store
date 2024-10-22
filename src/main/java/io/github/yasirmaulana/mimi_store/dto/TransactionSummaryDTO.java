@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class TransactionSummaryDTO {
-    private int yearmonth;
+    private String yearmonth;
     private Long totalAmount;
     private Long totalTransaction;
 }

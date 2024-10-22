@@ -1,17 +1,19 @@
 package io.github.yasirmaulana.mimi_store.web;
 
 import io.github.yasirmaulana.mimi_store.dto.ResultPageResponseDTO;
+import io.github.yasirmaulana.mimi_store.dto.TransactionSummaryDTO;
 import io.github.yasirmaulana.mimi_store.dto.TransaksiListResponseDTO;
 import io.github.yasirmaulana.mimi_store.dto.WebResponse;
 import io.github.yasirmaulana.mimi_store.service.TransactionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
+@RequestMapping("xl")
 public class TransaksiResource {
 
     private final TransactionService transactionService;
@@ -37,5 +39,24 @@ public class TransaksiResource {
     ) {
         ResultPageResponseDTO<TransaksiListResponseDTO> result = transactionService.findTransaksiList(pages, limit, sortBy, direction, pelangganId);
         return WebResponse.<ResultPageResponseDTO<TransaksiListResponseDTO>>builder().status("ok").code("00").message("success").data(result).build();
+    }
+
+    @GetMapping("/api/transactionbymsisdn/{msisdn}")
+    public WebResponse<List<TransaksiListResponseDTO>> findTransactionByMsisdn(@PathVariable String msisdn) {
+        List<TransaksiListResponseDTO> hasil = transactionService.findTransactionByMsisdn(msisdn);
+        if (hasil.isEmpty()) {
+            return WebResponse.<List<TransaksiListResponseDTO>>builder().status("failed").code("01").message("subscriber not found").build();
+        }
+        return WebResponse.<List<TransaksiListResponseDTO>>builder().status("ok").code("00").message("success").data(hasil).build();
+    }
+
+
+    @GetMapping("/api/transactionsummarybymsisdn/{msisdn}")
+    public WebResponse<List<TransactionSummaryDTO>> findTransactionSummaryByMsisdn(@PathVariable String msisdn) {
+        List<TransactionSummaryDTO> hasil = transactionService.findTransactionSummaryByMsisdn(msisdn);
+        if (hasil.isEmpty()) {
+            return WebResponse.<List<TransactionSummaryDTO>>builder().status("failed").code("01").message("subscriber not found").build();
+        }
+        return WebResponse.<List<TransactionSummaryDTO>>builder().status("ok").code("00").message("success").data(hasil).build();
     }
 }

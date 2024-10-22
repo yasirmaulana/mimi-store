@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "transaksi")
+@Table(name = "transaction")
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,4 +34,7 @@ public class Transaction {
 
     @Column(name = "total_harga", nullable = false)
     private Long totalHarga;
+
+    @Column(name = "msisdn")
+    private String msisdn;
 }

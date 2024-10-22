@@ -14,5 +14,4 @@ public class WebResponse<T> {
     private String code;
     private String message;
     private T data;
-    private String error;
 }
